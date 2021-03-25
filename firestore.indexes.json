@@ -1,0 +1,177 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "AIRTIME_CREDIT_LINE",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "solved",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "BANK_DEPOSITS_COLLECTION",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "memberId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "COMMENTS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "articleUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "EXCHANGE_CHANGES",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "_isCancel",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "initiator.userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FINANCIAL_EDUCATION",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "latestUpdateAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FINANCIAL_EDUCATION",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "publicationDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FINANCIAL_EDUCATION",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "publicationDate",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FRAUDERS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "denonciatorPhones",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FRAUDERS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "denonciators",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "FRAUDERS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "denonciators.denonciator",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "SHOPPING_CREDIT_LINE",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "solved",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "SHOPS",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "name",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
