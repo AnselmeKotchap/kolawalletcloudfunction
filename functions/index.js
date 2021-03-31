@@ -13,52 +13,52 @@ const json2csv = require('json2csv');
 const db = admin.firestore()
 
 exports.obServeNewUser = functions
-.firestore.document("KUSERS/{userId}")
-.onCreate((snap, context) =>{
+    .firestore.document("KUSERS/{userId}")
+    .onCreate((snap, context) => {
 
-    //get user data
-    const newuseobj = snap.data();
-    var userId = newuseobj.userUid
-    var authPhoneNumber = newuseobj.authPhoneNumber
+        //get user data
+        const newuseobj = snap.data();
+        var userId = newuseobj.userUid
+        var authPhoneNumber = newuseobj.authPhoneNumber
 
-    var selectedDocument =""
-    var authPhoneWithoutPlus237 = authPhoneNumber.substring(4)
+        var selectedDocument = ""
+        var authPhoneWithoutPlus237 = authPhoneNumber.substring(4)
 
-   if(isOrangePhoneNumber(authPhoneWithoutPlus237)){
-       selectedDocument =  "ORANGE_MONEY"
-   }
-   else if(isMTNPhoneNumber(authPhoneWithoutPlus237)){
-        selectedDocument =  "MTN_MONEY"
-    }else{
-        selectedDocument =  "UNKNOWOPERATOR"
-    }
+        if (isOrangePhoneNumber(authPhoneWithoutPlus237)) {
+            selectedDocument = "ORANGE_MONEY"
+        }
+        else if (isMTNPhoneNumber(authPhoneWithoutPlus237)) {
+            selectedDocument = "MTN_MONEY"
+        } else {
+            selectedDocument = "UNKNOWOPERATOR"
+        }
 
-    return db.collection("PHONENUMBERS_AND_DETECTED_NAMES")
-    .doc(selectedDocument)
-    .collection("DETECTED_NAMES")
-    .doc(authPhoneWithoutPlus237)
-    .set({
-        userUid: userId,
-        phoneNumber: authPhoneWithoutPlus237
-    }, { merge: true})
-    .then(()=>{
-        console.log("New user Id saved in detectedName collection: Id: $useuserUid, phoneNumber: $authPhoneWithoutPlus237")
-        return;
-    })
-    .catch((error)=>{
-        console.error("Error to saveuser Id saved in detectedName collection: Id: $useuserUid, phoneNumber: $authPhoneWithoutPlus237")
+        return db.collection("PHONENUMBERS_AND_DETECTED_NAMES")
+            .doc(selectedDocument)
+            .collection("DETECTED_NAMES")
+            .doc(authPhoneWithoutPlus237)
+            .set({
+                userUid: userId,
+                phoneNumber: authPhoneWithoutPlus237
+            }, { merge: true })
+            .then(() => {
+                console.log("New user Id saved in detectedName collection: Id: $useuserUid, phoneNumber: $authPhoneWithoutPlus237")
+                return;
+            })
+            .catch((error) => {
+                console.error("Error to saveuser Id saved in detectedName collection: Id: $useuserUid, phoneNumber: $authPhoneWithoutPlus237")
+            });
+
+
     });
 
-
-});
-
-function isOrangePhoneNumber(phonenumber){
+function isOrangePhoneNumber(phonenumber) {
     const regexOrange = /6(9([0-9])|5([5-9]))[0-9]{6}$/;
     return phonenumber.match(regexOrange)
 }
 
-function isMTNPhoneNumber(phonenumber){
-    const regexMTN =/6(7([0-9])|(8|5)([0-4]))[0-9]{6}$/
+function isMTNPhoneNumber(phonenumber) {
+    const regexMTN = /6(7([0-9])|(8|5)([0-4]))[0-9]{6}$/
     return phonenumber.match(regexMTN)
 }
 
@@ -70,14 +70,14 @@ exports.createCSV = functions.firestore
         const data = change.after.id
         // Step 1. Set main variables
 
-       
+
         //const reportId = event.params.reportId;
         //const fileName = `reports/${reportId}.csv`;
 
         const fileName = `reports/new_report.csv`;
         const tempFilePath = path.join(os.tmpdir(), fileName);
-        
-        
+
+
         // Reference report in Firestore
         const db = admin.firestore()
        // const reportRef = db.collection('reports').doc(reportId)
@@ -88,9 +88,9 @@ exports.createCSV = functions.firestore
 
         // Step 2. Query collection
         return db.collectionGroup('USER_SMS')
-                 .get() 
+                 .get()
                  .then(querySnapshot => {
-                    
+
                     /// Step 3. Creates CSV file from with transactionSms collection
                     const transactionSms = []
 
@@ -99,7 +99,7 @@ exports.createCSV = functions.firestore
                         transactionSms.push( doc.data() )
                     });
 
-                    
+
                     return json2csv({ data: transactionSms });
                  })
                 .then(csv => {
@@ -111,7 +111,7 @@ exports.createCSV = functions.firestore
                     return storage.upload(tempFilePath, { destination: fileName })
                 })
                 .then(file => {
-                    // Step 6. Update status to complete in Firestore 
+                    // Step 6. Update status to complete in Firestore
 
                     return reportRef.update({ status: 'complete' })
                 })
@@ -127,14 +127,14 @@ exports.createCSV_for_sms = functions.firestore
         const data = change.after.id
         // Step 1. Set main variables
 
-       
+
         //const reportId = event.params.reportId;
         //const fileName = `reports/${reportId}.csv`;
 
         const fileName = `reports/new_report_sms.csv`;
         const tempFilePath = path.join(os.tmpdir(), fileName);
-        
-        
+
+
         // Reference report in Firestore
         const db = admin.firestore()
        // const reportRef = db.collection('reports').doc(reportId)
@@ -145,9 +145,9 @@ exports.createCSV_for_sms = functions.firestore
 
         // Step 2. Query collection
         return db.collectionGroup('USER_SMS')
-                 .get() 
+                 .get()
                  .then(querySnapshot => {
-                    
+
                     /// Step 3. Creates CSV file from with transactionSms collection
                     const transactionSms = []
 
@@ -156,7 +156,7 @@ exports.createCSV_for_sms = functions.firestore
                         transactionSms.push( doc.data().custumSMSObjet.originalMessage )
                     });
 
-                    
+
                     return json2csv({ data: transactionSms });
                  })
                 .then(csv => {
@@ -168,7 +168,7 @@ exports.createCSV_for_sms = functions.firestore
                     return storage.upload(tempFilePath, { destination: fileName })
                 })
                 .then(file => {
-                    // Step 6. Update status to complete in Firestore 
+                    // Step 6. Update status to complete in Firestore
 
                     return reportRef.update({ status: 'complete' })
                 })
