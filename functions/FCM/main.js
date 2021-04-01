@@ -13,7 +13,7 @@ const notif = require('../entities/Notification');
  */
 exports.sendMessageToTopicForSync = function (topic, notification, data) {
     let payload = {
-        notification: { ...notification },
+        //notification: { ...notification },
         data: { ...data }
     }
 
@@ -35,7 +35,7 @@ exports.sendMessageToTopicForSync = function (topic, notification, data) {
  */
 exports.sendMessageToTokenForSync = function (token, notification, data) {
     let payload = {
-        notification: { ...notification },
+        //notification: { ...notification },
         data: { ...data }
     }
 
