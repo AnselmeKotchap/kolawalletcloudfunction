@@ -3,9 +3,17 @@
  */
 
 
+const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
+
+// Test module, to remove
+exports.test = require('./test');
+
+
 // User module
-exports.userIndex = require('./modules/user/userIndex');
+exports.userMain = require('./modules/user/userMain');
 
 
 // Group saving module
-exports.groupSavingIndex = require('./modules/groupSaving/groupSavingIndex');
+exports.groupSavingMain = require('./modules/groupSaving/groupSavingMain');
