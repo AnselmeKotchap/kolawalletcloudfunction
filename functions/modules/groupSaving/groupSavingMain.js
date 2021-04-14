@@ -1,50 +1,9 @@
-const functions = require("firebase-functions")
-const utils = require("../../utils/utils")
-require("../../utils/Constants")
-const notificationModule = require("../../FCM/main")
-const dataTopicEntity = require('../../entities/DataTopic');
-const dataTokenEntity = require('../../entities/DataToken');
+const commonTrigger = require('../commonTrigger');
 
 const GROUP_ENTITY_NAME = "GroupSaving"
 
-exports.listenGroup = functions.firestore
-    .document("GROUP_SAVING/{groupId}")
-    .onWrite((change, contex) => {
+const BANK_ENTITY_NAME = "Bank"
 
-        if (change.before.exists && change.after.exists) {
-            // update event
-            console.log("********* UPDATE *****************")
-            let docRef = change.after.ref
-            let path = docRef.path
-            let data = new dataTopicEntity.DataTopic(path, "UPDATE", GROUP_ENTITY_NAME)
-            let topic = docRef.id
+exports.listenGroup = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}", GROUP_ENTITY_NAME)
 
-            console.log("Document Path-> " + path)
-            console.log("Topic-> " + topic)
-            console.log("Data path -> " + data.path)
-            console.log("Data method -> " + data.method)
-            console.log("Data entity -> " + data.entity)
-            notificationModule.sendMessageToTopicForSync(topic, data)
-
-        } else if (!change.after.exists) {
-            //delete event
-            console.log("********* DELETE *****************")
-            let docRef = change.before.ref
-            let path = docRef.path
-            let data = new dataTopicEntity.DataTopic(path, "DELETE", GROUP_ENTITY_NAME)
-            let topic = docRef.id
-
-            console.log("Document Path-> " + path)
-            console.log("Topic-> " + topic)
-            console.log("Data path -> " + data.path)
-            console.log("Data method -> " + data.method)
-            console.log("Data entity -> " + data.entity)
-            notificationModule.sendMessageToTopicForSync(topic, data)
-        } else {
-            //add event
-            console.log("********* CREATE *****************")
-        }
-
-    });
-
-
+exports.listenBank = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/BANKS/{bankId}", BANK_ENTITY_NAME)
