@@ -21,8 +21,10 @@ exports.listenGroup = functions.firestore
 
             console.log("Document Path-> " + path)
             console.log("Topic-> " + topic)
-            console.log("Data-> " + { ...data })
-            //notificationModule.sendMessageToTopicForSync(topic, data)
+            console.log("Data path -> " + data.path)
+            console.log("Data method -> " + data.method)
+            console.log("Data entity -> " + data.entity)
+            notificationModule.sendMessageToTopicForSync(topic, data)
 
         } else if (!change.after.exists) {
             //delete event
@@ -34,8 +36,10 @@ exports.listenGroup = functions.firestore
 
             console.log("Document Path-> " + path)
             console.log("Topic-> " + topic)
-            console.log("Data-> " + { ...data })
-            //notificationModule.sendMessageToTopicForSync(topic, data)
+            console.log("Data path -> " + data.path)
+            console.log("Data method -> " + data.method)
+            console.log("Data entity -> " + data.entity)
+            notificationModule.sendMessageToTopicForSync(topic, data)
         } else {
             //add event
             console.log("********* CREATE *****************")
