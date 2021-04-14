@@ -12,8 +12,8 @@ exports.test = require('./test');
 
 
 // User module
-exports.userMain = require('./modules/user/userMain');
+exports.userMain = require('./triggers/user/userMain');
 
 
 // Group saving module
-exports.groupSavingMain = require('./modules/groupSaving/groupSavingMain');
+exports.groupSavingMain = require('./triggers/groupSaving/groupSavingMain');
