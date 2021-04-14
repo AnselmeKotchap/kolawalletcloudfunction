@@ -8,12 +8,10 @@ const notif = require('../entities/Notification');
 /**
  * Function to send data to many user for synchronisation
  * @param topic topic to which users have subscribed : string
- * @param notification notification params : Notification
  * @param data data of the notification : DataTopic
  */
-exports.sendMessageToTopicForSync = function (topic, notification, data) {
+exports.sendMessageToTopicForSync = function (topic, data) {
     let payload = {
-        //notification: { ...notification },
         data: { ...data }
     }
 
@@ -30,12 +28,10 @@ exports.sendMessageToTopicForSync = function (topic, notification, data) {
 /**
  * Function to send data to one user for synchronisation
  * @param token devise token: string
- * @param notification notification params : Notification
  * @param data data of the notification : DataToken
  */
-exports.sendMessageToTokenForSync = function (token, notification, data) {
+exports.sendMessageToTokenForSync = function (token,  data) {
     let payload = {
-        //notification: { ...notification },
         data: { ...data }
     }
 
