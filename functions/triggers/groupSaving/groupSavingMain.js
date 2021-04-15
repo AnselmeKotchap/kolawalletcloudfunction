@@ -21,7 +21,7 @@ exports.listenTontine = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TON
 
 exports.listenCampaign = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/CAMPAIGNS/{campaignId}", "Campaign")
 exports.listenCampaignContribution = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/CAMPAIGNS/{campaignId}/CAMPAIGN_CONTRIBUTIONS/{campContributionId}", "CampaignContribution")
-//TODO() create campagaignWithdrawal trigger
+exports.listenCampaignWithdrawal = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/CAMPAIGNS/{campaignId}/CAMPAIGN_WITHDRAWALS/{campWithdrawalId}", "WithdrawalCampaign")
 
 
 exports.listenPictureGroup = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/GROUP_PICTURES/{groupPictureId}", "PictureGroup")
