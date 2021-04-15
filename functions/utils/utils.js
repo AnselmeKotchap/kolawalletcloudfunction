@@ -7,3 +7,7 @@ exports.isMTNPhoneNumber = function (phonenumber) {
     const regexMTN = /6(7([0-9])|(8|5)([0-4]))[0-9]{6}$/
     return phonenumber.match(regexMTN)
 }
+
+exports.getGroupIdFromPath = function(path){
+    return path.split("/")[1]
+}

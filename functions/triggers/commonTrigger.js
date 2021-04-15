@@ -17,7 +17,8 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 let docRef = change.after.ref
                 let path = docRef.path
                 let data = new dataTopicEntity.DataTopic(path, "UPDATE", className)
-                let topic = docRef.id
+
+                let topic = utils.getGroupIdFromPath(path)
 
                 console.log("Document Path-> " + path)
                 console.log("Topic-> " + topic)
@@ -32,7 +33,7 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 let docRef = change.before.ref
                 let path = docRef.path
                 let data = new dataTopicEntity.DataTopic(path, "DELETE", className)
-                let topic = docRef.id
+                let topic =  utils.getGroupIdFromPath(path)
 
                 console.log("Document Path-> " + path)
                 console.log("Topic-> " + topic)
@@ -46,7 +47,7 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 let docRef = change.after.ref
                 let path = docRef.path
                 let data = new dataTopicEntity.DataTopic(path, "CREATE", className)
-                let topic = docRef.id
+                let topic =  utils.getGroupIdFromPath(path)
 
                 console.log("Document Path-> " + path)
                 console.log("Topic-> " + topic)
@@ -71,7 +72,7 @@ exports.onWriteMemberTrigger = function (documentRefPath, className) {
             let docRef = change.after.ref
             let path = docRef.path
             let data = new dataTopicEntity.DataTopic(path, "UPDATE", className)
-            let topic = docRef.id
+            let topic = utils.getGroupIdFromPath(path)
 
             console.log("Document Path-> " + path)
             console.log("Topic-> " + topic)
@@ -86,7 +87,7 @@ exports.onWriteMemberTrigger = function (documentRefPath, className) {
             let docRef = change.before.ref
             let path = docRef.path
             let data = new dataTopicEntity.DataTopic(path, "DELETE", className)
-            let topic = docRef.id
+            let topic = utils.getGroupIdFromPath(path)
 
             console.log("Document Path-> " + path)
             console.log("Topic-> " + topic)
@@ -99,7 +100,7 @@ exports.onWriteMemberTrigger = function (documentRefPath, className) {
             console.log("********* CREATE *****************")
             let docRef = change.after.ref
             let path = docRef.path
-            let data = new dataTopicEntity.DataTopic(path, "CREATE", className)
+            let data = new dataTokenEntity.DataToken(path, "CREATE", className)
             let memberUserId = context.params.userIdOfMember
             let memberMaintPhoneNmber =context.params.mainPhone
             let token = memberUserId
