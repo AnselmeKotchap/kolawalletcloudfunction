@@ -2,7 +2,10 @@ const commonTrigger = require('../commonTrigger');
 
 
 exports.listenGroup = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}", "GroupSaving")
+
 exports.listenTontine = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}", "Tontine")
+//exports.listenTontine = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}", "Tontine")
+
 exports.listenTontineCycle = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}", "TontineCycle")
 exports.listenTontineSession = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}/TONTINE_SESSIONS/{sessionId}", "SessionTontine")
 
@@ -16,8 +19,6 @@ exports.listenBankWithdrawal = commonTrigger.onWriteTrigger("GROUP_SAVING/{group
 exports.listenBankLoan = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/BANKS/{bankId}/BANK_LOANS/{BankLoanId}", "LoanBank")
 
 
-
-exports.listenTontine = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}", "Tontine")
 
 exports.listenCampaign = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/CAMPAIGNS/{campaignId}", "Campaign")
 exports.listenCampaignContribution = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/CAMPAIGNS/{campaignId}/CAMPAIGN_CONTRIBUTIONS/{campContributionId}", "CampaignContribution")
