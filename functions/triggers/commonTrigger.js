@@ -114,21 +114,22 @@ exports.onWriteMemberTrigger = function (documentRefPath, className) {
                 console.log("member auth phone number ->" + memberMaintPhoneNmber)
 
                 if (memberUserId != "") {
-                    const checkUserDoc = db.collection("KUSERS").doc(memberUserId).get();
+                    let checkUserDoc = db.collection("KUSERS").doc(memberUserId).get();
                     return checkUserDoc.then(userDoc => {
 
                         if (!userDoc.exists) {
                             console.log("No such document! This user doens't have an account");
                         } else {
 
-                            const userData = userDoc.data()
+                            let userData = userDoc.data()
                             console.log("userData -> " + userData)
-                            const usertokenToken = userData.cloudMessageToken
-                            const groupId = userData.groupId
-                            const groupPath = "GROUP_SAVING/"+groupId
+                            let usertokenToken = userData.cloudMessageToken
+                            let groupId = utils.getGroupIdFromPath(path)
+
+                            let groupPath = "GROUP_SAVING/"+groupId
 
                             let dataToken = new dataTokenEntity.DataToken(groupId, groupPath, "CREATE", "GroupSaving")
-                            console.log("Data method -> " + dataToken.topicToSubscribe)
+                            console.log("Data topicToSubscribe -> " + dataToken.topicToSubscribe)
                             console.log("Data method -> " + dataToken.method)
                             console.log("Data entity -> " + dataToken.entity)
                             console.log("Token-> " + usertokenToken)
