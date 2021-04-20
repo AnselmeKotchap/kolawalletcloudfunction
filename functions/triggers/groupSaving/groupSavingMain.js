@@ -9,7 +9,7 @@ exports.listenTontine = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TON
 exports.listenTontineCycle = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}", "TontineCycle")
 exports.listenTontineSession = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}/TONTINE_SESSIONS/{sessionId}", "SessionTontine")
 
-exports.listenTontineSessionBeneficiary = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}/TONTINE_SESSIONS/{sessionId}/BENEFICIARY_COLLECTION/{beneficiaryId}", "Beneficiary")
+exports.listenTontineSessionBeneficiary = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}/TONTINE_SESSIONS/{sessionId}/GOT_MONEY_COLLECTION/{gotMoneyId}", "GotMoney")
 exports.listenTontineSessioncontribution = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/TONTINES/{tontineId}/TONTINE_CYCLE_COLLECTION/{tontineCycleId}/TONTINE_SESSIONS/{sessionId}/CONTRIBUTIONS_TONTINES/{contributionId}", "Contribution")
 
 
@@ -30,5 +30,5 @@ exports.listenPictureGroup = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId
 exports.listenAnnoucement = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/ANNOUNCEMENT_COLLECTION/{announcementId}", "AnnouncementGroup")
 
 
-exports.onWriteMember = commonTrigger.onWriteMemberTrigger("GROUP_SAVING/{groupId}/MEMBERS_COLLECTION/{memberId}", "GroupSMember")
+exports.onWriteMember = commonTrigger.onWriteTrigger("GROUP_SAVING/{groupId}/MEMBERS_COLLECTION/{memberId}", "GroupSMember")
 
