@@ -1,10 +1,16 @@
 const functions = require("firebase-functions")
 const utils = require("../utils/utils")
-const notificationModule = require("../FCM/main")
+const eventNotification = require("../utils/eventNotifications");
+const notificationModule = require("../FCM/main");
 const dataTopicEntity = require('../entities/DataTopic');
 const dataTokenEntity = require('../entities/DataToken');
 let admin = require('firebase-admin');
 const db = admin.firestore();
+
+const FCM_CREATE_METHODE = "CREATE"
+const FCM_DELETE_METHODE = "DELETE"
+const FCM_UPDATE_METHODE = "UPDATE"
+const FCM_ADD_MEMBER_TO_GROUP_METHODE = "ADD_TO_GROUP"
 
 
 exports.onWriteTrigger = function (documentRefPath, className) {
@@ -28,6 +34,7 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 console.log("Data method -> " + data.method)
                 console.log("Data entity -> " + data.entity)
                 notificationModule.sendMessageToTopicForSync(topic, data)
+                eventNotification.sendEvenNotification(path,className, FCM_UPDATE_METHODE)
 
 
                 if (className == "GroupSMember") {
@@ -62,6 +69,8 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 console.log("Data method -> " + data.method)
                 console.log("Data entity -> " + data.entity)
                 notificationModule.sendMessageToTopicForSync(topic, data)
+                eventNotification.sendEvenNotification(path,className, FCM_DELETE_METHODE)
+
             } else {
                 //add event
                 console.log("********* CREATE *****************")
@@ -76,6 +85,7 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 console.log("Data method -> " + data.method)
                 console.log("Data entity -> " + data.entity)
                 notificationModule.sendMessageToTopicForSync(topic, data)
+                eventNotification.sendEvenNotification(path, className, FCM_CREATE_METHODE)
 
                 if (className == "GroupSMember") {
                     findUserByIdAndSendSyncToken(change, path);
@@ -202,8 +212,7 @@ function findUserByIdAndSendSyncToken(change, path) {
                 console.log("Data entity -> " + dataToken.entity);
                 console.log("Token-> " + usertokenToken);
 
-                notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken);
-            }
+                notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken);            }
         }).catch(err => {
             console.log('Error getting document', err);
             throw new functions.https.HttpsError('Error getting document', err);
