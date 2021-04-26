@@ -8,7 +8,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 // Test module, to remove
-exports.test = require('./test');
+//exports.test = require('./test');
 
 
 // User module

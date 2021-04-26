@@ -51,7 +51,10 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                         if(phoneToFind.length == 13){
                              phoneToFind = memberMaintPhoneNmber.substring(4) //TO remove +237
                         }
-                        findUserByPhoneNumberAndSendSyncToken(phoneToFind, path);
+
+                        if(change.before.phoneList.length != change.after.phoneList.length){
+                            findUserByPhoneNumberAndSendSyncToken(phoneToFind, path);
+                        }
                     }
                 }
 
