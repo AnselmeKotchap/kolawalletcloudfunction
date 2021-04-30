@@ -34,25 +34,30 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 console.log("Data method -> " + data.method)
                 console.log("Data entity -> " + data.entity)
                 notificationModule.sendMessageToTopicForSync(topic, data)
-                eventNotification.sendEvenNotification(path,className, FCM_UPDATE_METHODE)
+                eventNotification.sendEvenNotification(path, className, FCM_UPDATE_METHODE)
 
 
                 if (className == "GroupSMember") {
-                    const createdData = change.after.data()
-                    let memberUserId = createdData.userIdOfMember
-                    let memberMaintPhoneNmber = createdData.mainPhone
+                    const dataBeforeChanges = change.before.data()
+                    const dataAfterChanges = change.after.data()
+                    let memberUserId = dataAfterChanges.userIdOfMember
+                    let memberMaintPhoneNmber = dataAfterChanges.mainPhone
 
-                    console.log("created data ->" + createdData)
+                    console.log("created data ->" + dataAfterChanges)
                     console.log("User Id Of Member ->" + memberUserId)
                     console.log("member auth phone number ->" + memberMaintPhoneNmber)
 
                     if (memberUserId != "") {
-                        var  phoneToFind =memberMaintPhoneNmber
-                        if(phoneToFind.length == 13){
-                             phoneToFind = memberMaintPhoneNmber.substring(4) //TO remove +237
+                        var phoneToFind = memberMaintPhoneNmber
+                        if (phoneToFind.length == 13) {
+                            phoneToFind = memberMaintPhoneNmber.substring(4) //TO remove +237
                         }
 
-                        if(change.before.phoneList.length != change.after.phoneList.length){
+                        console.log("member Id is not empty: user phone without +237 ->" + phoneToFind)
+                        console.log("member phoneList ->" + dataAfterChanges.phoneList)
+
+                        if (dataBeforeChanges.phoneList.length != dataAfterChanges.phoneList.length) {
+                            console.log("user phoneNumbers leng are updated");
                             findUserByPhoneNumberAndSendSyncToken(phoneToFind, path);
                         }
                     }
@@ -72,7 +77,7 @@ exports.onWriteTrigger = function (documentRefPath, className) {
                 console.log("Data method -> " + data.method)
                 console.log("Data entity -> " + data.entity)
                 notificationModule.sendMessageToTopicForSync(topic, data)
-                eventNotification.sendEvenNotification(path,className, FCM_DELETE_METHODE)
+                eventNotification.sendEvenNotification(path, className, FCM_DELETE_METHODE)
 
             } else {
                 //add event
@@ -170,8 +175,11 @@ exports.onWriteMemberTrigger = function (documentRefPath, className) {
                             console.log("Data entity -> " + dataToken.entity)
                             console.log("Token-> " + usertokenToken)
 
-                            notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken)
-                            //TODO sen topic
+                            try {
+                                notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken)
+                            } catch (error) {
+                                console.log('Error getting document', error);
+                            }
                         }
                     }).catch(err => {
                         console.log('Error getting document', err);
@@ -215,7 +223,8 @@ function findUserByIdAndSendSyncToken(change, path) {
                 console.log("Data entity -> " + dataToken.entity);
                 console.log("Token-> " + usertokenToken);
 
-                notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken);            }
+                notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken);
+            }
         }).catch(err => {
             console.log('Error getting document', err);
             throw new functions.https.HttpsError('Error getting document', err);
@@ -225,7 +234,7 @@ function findUserByIdAndSendSyncToken(change, path) {
 }
 
 function findUserByPhoneNumberAndSendSyncToken(membePhoneNmber, path) {
-    console.log("phone of member to find: "+membePhoneNmber);
+    console.log("phone of member to find: " + membePhoneNmber);
 
     let checkUserDoc = db.collection("KUSERS")
         .where('phoneNumbers', 'array-contains', membePhoneNmber)
@@ -248,16 +257,17 @@ function findUserByPhoneNumberAndSendSyncToken(membePhoneNmber, path) {
 
             let groupPath = "GROUP_SAVING/" + groupId;
 
-            let dataToken = new dataTokenEntity.DataToken(groupId, groupPath, "ADD_TO_GROUP", "GroupSaving");
-            console.log("Data topicToSubscribe -> " + dataToken.topicToSubscribe);
-            console.log("Data method -> " + dataToken.method);
-            console.log("Data entity -> " + dataToken.entity);
-            console.log("Token-> " + usertokenToken);
-            try{
+            try {
+                let dataToken = new dataTokenEntity.DataToken(groupId, groupPath, "ADD_TO_GROUP", "GroupSaving");
+                console.log("Data topicToSubscribe -> " + dataToken.topicToSubscribe);
+                console.log("Data method -> " + dataToken.method);
+                console.log("Data entity -> " + dataToken.entity);
+                console.log("Token-> " + usertokenToken);
+
                 notificationModule.sendMessageToTokenForSync(usertokenToken, dataToken);
-            }catch (e) {
+            } catch (e) {
                 console.log(e);
-              }
+            }
         });
 
     }).catch(err => {
