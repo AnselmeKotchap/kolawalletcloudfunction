@@ -17,3 +17,7 @@ exports.userMain = require('./triggers/user/userMain');
 
 // Group saving module
 exports.groupSavingMain = require('./triggers/groupSaving/groupSavingMain');
+
+
+// Credit line module
+exports.creditLineMain = require('./triggers/credtiLine/creditLineMain');
