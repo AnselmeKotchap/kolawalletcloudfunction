@@ -27,38 +27,51 @@ exports.obServeAirtimeCreditRequest = functions
             let docRef = change.after.ref
             let path = docRef.path
             let requestId = docRef.id
-            let data = "" + { ...change.after.data() }
+            let data = change.after.data()
 
-            let query = db.collection("GATEWAYS").where('gateWayIsAvailable', '==', true).get();
+            let userScore = data.score
 
-            query.then(snapshot => {
-                if (!snapshot.empty) {
-                    // Gateway is available
-                    snapshot.forEach(doc => {
-                        let gateWay = doc.data()
-                        let request = new dataAirtimeCreditRequest.DataAirtimeCreditRequest(requestId, path, doc.id, data)
-                        notificationModule.sendMessageToTokenForSync(gateWay.token, request)
+            if (userScore >= 580) {
+                let query = db.collection("GATEWAYS").where('gateWayIsAvailable', '==', true).get();
 
-                        console.log("requestId -> " + request.requestId)
-                        console.log("path -> " + request.path)
-                        console.log("gateWayId -> " + request.gateWayId)
-                        console.log("data -> " + request.data)
-                        return
-                    })
-                } else {
-                    // Gateway is not available, we reject the request
-                    docRef.update({
-                        requestEnable: false,
-                        status: 'REJECTED',
-                        reasonOfReject: 'The service is unavailable, please try again later'
-                    })
+                query.then(snapshot => {
+                    if (!snapshot.empty) {
+                        // Gateway is available
+                        snapshot.forEach(doc => {
+                            let gateWay = doc.data()
+                            let request = new dataAirtimeCreditRequest.DataAirtimeCreditRequest(requestId, path, doc.id, "" + { ...data })
+                            notificationModule.sendMessageToTokenForSync(gateWay.token, request)
 
-                    console.log("request rejected")
-                }
-            }).catch(err => {
-                console.log('Error getting data', err);
-                throw new functions.https.HttpsError('Error getting document', err);
-            })
+                            console.log("requestId -> " + request.requestId)
+                            console.log("path -> " + request.path)
+                            console.log("gateWayId -> " + request.gateWayId)
+                            console.log("data -> " + request.data)
+                            return
+                        })
+                    } else {
+                        // Gateway is not available, we reject the request
+                        docRef.update({
+                            requestEnable: true,
+                            status: 'REJECTED',
+                            reasonOfReject: 'The service is unavailable, please try again later'
+                        })
+
+                        console.log("request rejected")
+                    }
+                }).catch(err => {
+                    console.log('Error getting data', err);
+                    throw new functions.https.HttpsError('Error getting document', err);
+                })
+            } else {
+                // User score is bad, we reject the request
+                docRef.update({
+                    requestEnable: true,
+                    status: 'REJECTED',
+                    reasonOfReject: 'You are not eligible for this service. Continue to use Kola wallet to improve your score'
+                })
+
+                console.log("request rejected")
+            }
         }
 
     });
