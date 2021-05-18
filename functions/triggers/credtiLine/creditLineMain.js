@@ -36,6 +36,11 @@ exports.obServeAirtimeCreditRequest = functions
 
                 query.then(snapshot => {
                     if (!snapshot.empty) {
+                        // The user is prevented from being able to cancel the request
+                        docRef.update({
+                            cancelable: false
+                        })
+
                         // Gateway is available
                         snapshot.forEach(doc => {
                             let gateWay = doc.data()
