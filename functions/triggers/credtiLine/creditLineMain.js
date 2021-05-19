@@ -36,13 +36,16 @@ exports.obServeAirtimeCreditRequest = functions
 
                 query.then(snapshot => {
                     if (!snapshot.empty) {
-                        // The user is prevented from being able to cancel the request
-                        docRef.update({
-                            cancelable: false
-                        })
 
                         // Gateway is available
                         snapshot.forEach(doc => {
+                            // The user is prevented from being able to cancel the request
+                            // The request is asign to the first available gateway
+                            docRef.update({
+                                gateWayId: doc.id,
+                                cancelable: false
+                            })
+
                             let gateWay = doc.data()
                             let request = new dataAirtimeCreditRequest.DataAirtimeCreditRequest(requestId, path, doc.id, "" + { ...data })
                             notificationModule.sendMessageToTokenForSync(gateWay.token, request)
